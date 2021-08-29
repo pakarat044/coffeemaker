@@ -18,7 +18,7 @@
  */
 package edu.ncsu.csc326.coffeemaker;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -132,9 +132,148 @@ public class CoffeeMakerTest {
 		assertEquals(25, coffeeMaker.makeCoffee(0, 75));
 	}
 
+	/**
+	 * Only three recipes may be added to the CoffeeMaker.
+	 */
 	@Test
-	public  void Test(){
-
+	public void testAddRecipe1() {
+		coffeeMaker.addRecipe(recipe1);
+		coffeeMaker.addRecipe(recipe2);
+		coffeeMaker.addRecipe(recipe3);
+		assertFalse(coffeeMaker.addRecipe(recipe4));
 	}
 
+	/**
+	 * A recipe consists of a name, price, units of coffee, units of milk, units of sugar, and units of chocolate.
+	 * Each recipe name must be unique in the recipe list.
+	 */
+	@Test
+	public void testAddRecipe2() throws RecipeException {
+		coffeeMaker.addRecipe(recipe1);
+		recipe2.setName("Coffee");
+		assertFalse(coffeeMaker.addRecipe(recipe2));
+	}
+
+	/**
+	 * Price must be handled as an integer
+	 */
+	@Test(expected = RecipeException.class )
+	public void testAddRecipe3() throws RecipeException {
+		recipe1.setPrice("Coffee");
+		assertFalse(coffeeMaker.addRecipe(recipe1));
+	}
+
+	/**
+	 * A recipe may be deleted from the CoffeeMaker
+	 * if it exists in the list of recipes in the CoffeeMaker.
+	 */
+	@Test
+	public void testDeleteRecipe1() {
+		coffeeMaker.addRecipe(recipe1);
+		coffeeMaker.addRecipe(recipe2);
+		coffeeMaker.addRecipe(recipe3);
+		assertEquals(recipe1.getName(),coffeeMaker.deleteRecipe(0));
+	}
+
+	/**
+	 * A recipe may be deleted from the CoffeeMaker
+	 * if it not exists in the list of recipes in the CoffeeMaker.
+	 * return null
+	 */
+	@Test
+	public void testDeleteRecipe2() {
+		coffeeMaker.addRecipe(recipe1);
+		coffeeMaker.addRecipe(recipe2);
+		assertNull(coffeeMaker.deleteRecipe(2));
+	}
+
+	/**
+	 * A recipe may be deleted from the CoffeeMaker
+	 * if it not exists in the list of recipes in the CoffeeMaker.
+	 * negative number
+	 */
+	@Test
+	public void testDeleteRecipe3() {
+		coffeeMaker.addRecipe(recipe1);
+		coffeeMaker.addRecipe(recipe2);
+		assertNull(coffeeMaker.deleteRecipe(-2));
+	}
+
+	/**
+	 * A recipe may be edited in the CoffeeMaker if it exists in the list of recipes in the CoffeeMaker.
+	 * After selecting a recipe to edit, the user will then enter the new recipe information. A recipe name may not be change.
+	 */
+	@Test
+	public void testEditRecipe1() {
+		coffeeMaker.addRecipe(recipe1);
+		coffeeMaker.editRecipe(0,recipe2);
+		assertEquals(coffeeMaker.getRecipes()[0].getName(),"Coffee");
+	}
+
+	/**
+	 * Inventory may be added to the machine at any time from the main menu, and is added to the current inventory in the CoffeeMaker.
+	 * amt coffee
+	 */
+	@Test
+	public void testAddInventory1() throws InventoryException {
+		coffeeMaker.addInventory("12","0","0","0");
+	}
+
+	/**
+	 * Inventory may be added to the machine at any time from the main menu, and is added to the current inventory in the CoffeeMaker.
+	 * amt milk
+	 */
+	@Test
+	public void testAddInventory2() throws InventoryException {
+		coffeeMaker.addInventory("0","12","0","0");
+	}
+
+	/**
+	 * Inventory may be added to the machine at any time from the main menu, and is added to the current inventory in the CoffeeMaker.
+	 * amt sugar
+	 */
+	@Test
+	public void testAddInventory3() throws InventoryException {
+		coffeeMaker.addInventory("0","0","12","0");
+	}
+
+	/**
+	 * Inventory may be added to the machine at any time from the main menu, and is added to the current inventory in the CoffeeMaker.
+	 * amt chocolate
+	 */
+	@Test
+	public void testAddInventory4() throws InventoryException {
+		coffeeMaker.addInventory("0","0","0","12");
+	}
+
+	/**
+	 * Inventory may be checked at any time from the main menu. The units of each item in the inventory are displayed.
+	 */
+	@Test
+	public void checkInventory() throws InventoryException {
+		coffeeMaker.addInventory("12","12","0","12");
+		assertEquals(coffeeMaker.checkInventory(),"Coffee: 27\nMilk: 27\nSugar: 15\nChocolate: 27\n");
+	}
+
+	/**
+	 * The user selects a beverage and inserts an amount of money.
+	 */
+	@Test
+	public void purchaseBeverage1() {
+		coffeeMaker.addRecipe(recipe1);
+		assertEquals(0,coffeeMaker.makeCoffee(0,50));
+		coffeeMaker.addRecipe(recipe3);
+		assertEquals(50,coffeeMaker.makeCoffee(2,50));
+	}
+
+	/**
+	 * The user selects a beverage and inserts an amount of money.
+	 * If the beverage is in the RecipeBook and the user paid enough money the beverage will be dispensed and any change will be returned.
+	 */
+	@Test
+	public void purchaseBeverage2() {
+		coffeeMaker.addRecipe(recipe1);
+		coffeeMaker.makeCoffee(0,50);
+		assertEquals(coffeeMaker.checkInventory(),"Coffee: 12\nMilk: 14\nSugar: 14\nChocolate: 15\n");
+	}
 }
