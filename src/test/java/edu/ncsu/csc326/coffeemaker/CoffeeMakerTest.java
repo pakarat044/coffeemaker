@@ -211,6 +211,17 @@ public class CoffeeMakerTest {
 	}
 
 	/**
+	 * A recipe may be edited in the CoffeeMaker if it exists in the list of recipes in the CoffeeMaker.
+	 * After selecting a recipe to edit, the user will then enter the new recipe information. A recipe name may not be change.
+	 * if recipe number is negative, it shpuld be null.
+	 */
+	@Test
+	public void testEditRecipe2() {
+		coffeeMaker.addRecipe(recipe1);
+		assertNull(coffeeMaker.editRecipe(-1,recipe2));
+	}
+
+	/**
 	 * Inventory may be added to the machine at any time from the main menu, and is added to the current inventory in the CoffeeMaker.
 	 * amt coffee
 	 */
