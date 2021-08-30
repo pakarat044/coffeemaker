@@ -261,7 +261,7 @@ public class CoffeeMakerTest {
 	 * Inventory may be checked at any time from the main menu. The units of each item in the inventory are displayed.
 	 */
 	@Test
-	public void checkInventory() throws InventoryException {
+	public void testCheckInventory() throws InventoryException {
 		coffeeMaker.addInventory("12","12","0","12");
 		assertEquals(coffeeMaker.checkInventory(),"Coffee: 27\nMilk: 27\nSugar: 15\nChocolate: 27\n");
 	}
@@ -270,7 +270,7 @@ public class CoffeeMakerTest {
 	 * The user selects a beverage and inserts an amount of money.
 	 */
 	@Test
-	public void purchaseBeverage1() {
+	public void testPurchaseBeverage1() {
 		coffeeMaker.addRecipe(recipe1);
 		assertEquals(0,coffeeMaker.makeCoffee(0,50));
 		coffeeMaker.addRecipe(recipe3);
@@ -282,7 +282,7 @@ public class CoffeeMakerTest {
 	 * If the beverage is in the RecipeBook and the user paid enough money the beverage will be dispensed and any change will be returned.
 	 */
 	@Test
-	public void purchaseBeverage2() {
+	public void testPurchaseBeverage2() {
 		coffeeMaker.addRecipe(recipe1);
 		coffeeMaker.makeCoffee(0,50);
 		assertEquals(coffeeMaker.checkInventory(),"Coffee: 12\nMilk: 14\nSugar: 14\nChocolate: 15\n");
