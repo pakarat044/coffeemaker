@@ -148,7 +148,7 @@ public class CoffeeMakerTest {
 	 * Each recipe name must be unique in the recipe list.
 	 */
 	@Test
-	public void testAddRecipe2() throws RecipeException {
+	public void testAddRecipe2(){
 		coffeeMaker.addRecipe(recipe1);
 		recipe2.setName("Coffee");
 		assertFalse(coffeeMaker.addRecipe(recipe2));
@@ -273,8 +273,11 @@ public class CoffeeMakerTest {
 	public void testPurchaseBeverage1() {
 		coffeeMaker.addRecipe(recipe1);
 		assertEquals(0,coffeeMaker.makeCoffee(0,50));
+		assertEquals(20,coffeeMaker.makeCoffee(0,20));
+		coffeeMaker.addRecipe(recipe2);
+		assertEquals(75,coffeeMaker.makeCoffee(1,75));
 		coffeeMaker.addRecipe(recipe3);
-		assertEquals(50,coffeeMaker.makeCoffee(2,50));
+		assertEquals(50,coffeeMaker.makeCoffee(3,50));
 	}
 
 	/**
