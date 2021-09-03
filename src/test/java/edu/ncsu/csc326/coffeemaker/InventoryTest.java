@@ -103,8 +103,8 @@ public class InventoryTest {
     }
 
     /*
-     * Add the number less than 0 of chocolate units in the inventory
-     * to the current amount of chocolate units.
+     * Sets the negative number of coffee units in the inventory
+     * to the specified amount.
      * */
     @Test
     public void testSetcoffee(){
