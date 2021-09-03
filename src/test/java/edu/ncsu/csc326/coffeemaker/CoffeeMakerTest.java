@@ -155,7 +155,7 @@ public class CoffeeMakerTest {
 	}
 
 	/**
-	 * Price must be handled as an integer
+	 * Price must be handled as an integer.
 	 */
 	@Test(expected = RecipeException.class )
 	public void testAddRecipe3() throws RecipeException {

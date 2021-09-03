@@ -39,5 +39,3 @@ gradle-app.setting
 hs_err_pid*
 
 .pdf
-
-*.DS_Store

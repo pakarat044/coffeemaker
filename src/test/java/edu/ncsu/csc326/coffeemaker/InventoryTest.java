@@ -74,8 +74,7 @@ public class InventoryTest {
     }
 
     /*
-    * Sets the number of chocolate units in the inventory
-    * negative number
+    * Sets the negative number of chocolate units in the inventory.
     * */
     @Test
     public void testSetchocolate(){
