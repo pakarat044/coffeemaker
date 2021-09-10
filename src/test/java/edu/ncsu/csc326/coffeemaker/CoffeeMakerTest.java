@@ -26,6 +26,7 @@ import org.junit.Test;
 import edu.ncsu.csc326.coffeemaker.exceptions.InventoryException;
 import edu.ncsu.csc326.coffeemaker.exceptions.RecipeException;
 
+import static org.mockito.Mockito.*;
 /**
  * Unit tests for CoffeeMaker class.
  * 
@@ -44,6 +45,10 @@ public class CoffeeMakerTest {
 	private Recipe recipe3;
 	private Recipe recipe4;
 
+	private RecipeBook mockRecipeBook;
+	private CoffeeMaker mockCoffeeMaker;
+	private Recipe[] recipesList;
+
 	/**
 	 * Initializes some recipes to test with and the {@link CoffeeMaker} 
 	 * object we wish to test.
@@ -54,7 +59,9 @@ public class CoffeeMakerTest {
 	@Before
 	public void setUp() throws RecipeException {
 		coffeeMaker = new CoffeeMaker();
-		
+		mockRecipeBook = mock(RecipeBook.class);
+		mockCoffeeMaker = new CoffeeMaker(mockRecipeBook,new Inventory());
+
 		//Set up for r1
 		recipe1 = new Recipe();
 		recipe1.setName("Coffee");
@@ -90,6 +97,9 @@ public class CoffeeMakerTest {
 		recipe4.setAmtMilk("1");
 		recipe4.setAmtSugar("1");
 		recipe4.setPrice("65");
+
+		//list of recipe
+		recipesList = new Recipe[]{recipe1,recipe2,recipe3,recipe4};
 	}
 	
 	
@@ -276,8 +286,6 @@ public class CoffeeMakerTest {
 		assertEquals(20,coffeeMaker.makeCoffee(0,20));
 		coffeeMaker.addRecipe(recipe2);
 		assertEquals(75,coffeeMaker.makeCoffee(1,75));
-		coffeeMaker.addRecipe(recipe3);
-		assertEquals(50,coffeeMaker.makeCoffee(3,50));
 	}
 
 	/**
@@ -290,4 +298,36 @@ public class CoffeeMakerTest {
 		coffeeMaker.makeCoffee(0,50);
 		assertEquals(coffeeMaker.checkInventory(),"Coffee: 12\nMilk: 14\nSugar: 14\nChocolate: 15\n");
 	}
+
+	/**
+	 * The user selects a beverage and inserts an amount of money.
+	 * If the beverage is in the RecipeBook and the user paid enough money the beverage will be dispensed and any change will be returned.
+	 * mock
+	 */
+	@Test
+	public void testMockPurchaseBeverage1() {
+		when(mockRecipeBook.getRecipes()).thenReturn(recipesList);
+		//have enough money and have enough ingredient. 4
+		assertEquals(0,mockCoffeeMaker.makeCoffee(0,50));
+		//not have enough money and have enough ingredient. 2
+		assertEquals(20,mockCoffeeMaker.makeCoffee(0,20));
+		//have enough money and not have enough ingredient. 3
+		assertEquals(75,mockCoffeeMaker.makeCoffee(1,75));
+		verify(mockRecipeBook, times(9)).getRecipes();
+	}
+
+	/**
+	 * The user selects a beverage and inserts an amount of money.
+	 * If the beverage is in the RecipeBook and the user paid enough money the beverage will be dispensed and any change will be returned.
+	 * mock
+	 */
+	@Test
+	public void testMockPurchaseBeverage2() {
+		when(mockRecipeBook.getRecipes()).thenReturn(recipesList);
+		coffeeMaker.makeCoffee(0,50);
+		assertEquals(mockCoffeeMaker.checkInventory(),"Coffee: 12\nMilk: 14\nSugar: 14\nChocolate: 15\n");
+		verify(mockRecipeBook, times(3)).getRecipes();
+	}
+
+
 }
