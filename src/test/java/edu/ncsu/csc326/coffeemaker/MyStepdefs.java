@@ -16,9 +16,10 @@ public class MyStepdefs {
         coffeeMaker = new CoffeeMaker();
     }
 
-    @When("add recipe1")
-    public void addRecipe1() throws RecipeException {
+    @When("add recipe{int}")
+    public void addRecipe1(int int1) throws RecipeException {
         // Write code here that turns the phrase above into concrete actions
+
         Recipe recipe1 = new Recipe();
         recipe1.setName("Coffee");
         recipe1.setAmtChocolate("0");
@@ -27,13 +28,23 @@ public class MyStepdefs {
         recipe1.setAmtSugar("1");
         recipe1.setPrice("50");
 
-        coffeeMaker.addRecipe(recipe1);
+        Recipe recipe2 = new Recipe();
+        recipe2.setName("Mocha");
+        recipe2.setAmtChocolate("20");
+        recipe2.setAmtCoffee("3");
+        recipe2.setAmtMilk("1");
+        recipe2.setAmtSugar("1");
+        recipe2.setPrice("75");
+
+        Recipe[] recipesList = new Recipe[]{recipe1, recipe2};
+
+        coffeeMaker.addRecipe(recipesList[int1-1]);
     }
 
-    @When("paid {int} for recipe1")
-    public void paidForRecipe1(int int1) {
+    @When("paid {int} for recipe position at {int}")
+    public void paidForRecipe1(int int1, int recipenum) {
         // Write code here that turns the phrase above into concrete actions
-        change = coffeeMaker.makeCoffee(0,int1);
+        change = coffeeMaker.makeCoffee(recipenum-1,int1);
     }
 
     @Then("change {int}")
